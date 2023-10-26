@@ -74,15 +74,25 @@ function redrawTilemap()
     }
 }
 
+let isDrawing=false;
 
-gridCanvas.addEventListener("click", (e) => {
+gridCanvas.addEventListener("mousemove", (e) => {
+    if(isDrawing){
     const coordX = Math.trunc(e.offsetX / tileSize);
     const coordY = Math.trunc(e.offsetY / tileSize);
-
     tilemap[coordX][coordY].src = currentTile;
-    redrawTilemap();
+    
+}
+redrawTilemap();
 })
 
+gridCanvas.addEventListener("mousedown", (e) => {
+    isDrawing=true;
+})
+
+gridCanvas.addEventListener("mouseup", (e) => {
+    isDrawing=false;
+})
 
 // ----- Interacting with the selectable tilemap -----
 
