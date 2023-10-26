@@ -64,33 +64,43 @@ function drawTexture(row: number, col: number, ctx: CanvasRenderingContext2D, im
 
 // ----- Interacting with the main tilemap -----
 
+let tilemapArrayX: number[] = [];
+let tilemapArrayY: number[] = [];
+
 function redrawTilemap()
 {
-  gridCtx.clearRect(0, 0, gridCanvas.width, gridCanvas.height);
+    //gridCtx.clearRect(0, 0, gridCanvas.width, gridCanvas.height);
     for (let i = 0; i < numTiles; i++) {
         for (let j = 0; j < numTiles; j++) {
             drawTexture(i, j, gridCtx, tilemap[i][j], gridCanvas.width / numTiles, gridCanvas.height / numTiles, tileSize);
         }
     }
+    /*
+    if(tilemapArrayX.length){
+        for(let i=0; i<tilemapArrayX.length; i++){
+            drawTexture(tilemapArrayX[i], tilemapArrayY[i], gridCtx, "/tile1.png", gridCanvas.width / numTiles, gridCanvas.height / numTiles, tileSize);
+        }
+    }*/
 }
 
 let isDrawing=false;
 
 gridCanvas.addEventListener("mousemove", (e) => {
     if(isDrawing){
-    const coordX = Math.trunc(e.offsetX / tileSize);
-    const coordY = Math.trunc(e.offsetY / tileSize);
-    tilemap[coordX][coordY].src = currentTile;
-    
-}
-redrawTilemap();
+        const coordX = Math.trunc(e.offsetX / tileSize);
+        const coordY = Math.trunc(e.offsetY / tileSize);
+        tilemapArrayX.push(coordX);
+        tilemapArrayY.push(coordY);
+        tilemap[coordX][coordY].src = currentTile;
+        redrawTilemap();
+    }
 })
 
-gridCanvas.addEventListener("mousedown", (e) => {
+gridCanvas.addEventListener("mousedown", () => {
     isDrawing=true;
 })
 
-gridCanvas.addEventListener("mouseup", (e) => {
+gridCanvas.addEventListener("mouseup", () => {
     isDrawing=false;
 })
 
